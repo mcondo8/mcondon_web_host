@@ -1,12 +1,14 @@
 version: "3"
+# Docker Compose to create Reverse proxy & listed services
 
+# Internal network for container use
 networks:
   hosting:
     external: false
 
-#Reverse proxy, nginx
-#Services to be hosted must be defined in sites
 services: 
+  # Gitea instance using SQLITE backend storage
+  # to host GIT + front end
   repos:
     image: gitea/gitea:latest
     container_name: repos
@@ -25,6 +27,10 @@ services:
       - "3000"
       - "22"
 
+  #Reverse proxy - NGINX
+  # To add new services, add appropriate build above for docker container
+  # And create a service proxy config file in ./nginx/config/sites
+  # Must end in .conf
   ngreverse:
     depends_on:
       - repos
