@@ -27,4 +27,8 @@
 # TODO
 	- SSL Setup
 	- Automate service add
-	
+	- Services to add: 
+	- 	Jenkins
+	- 	C951 / Capstone
+	- 	Wordpress
+	- 	Heimdall	
