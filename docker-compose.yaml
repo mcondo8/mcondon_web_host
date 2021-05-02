@@ -1,0 +1,41 @@
+version: "3"
+
+networks:
+  hosting:
+    external: false
+
+#Reverse proxy, nginx
+#Services to be hosted must be defined in sites
+services: 
+  repos:
+    image: gitea/gitea:latest
+    container_name: repos
+    environment:
+      - USER_UID=0
+      - USER_GID=0
+    restart: always
+    hostname: repos
+    networks:
+      - hosting
+    volumes:
+      - ./gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3000"
+      - "22"
+
+  ngreverse:
+    depends_on:
+      - repos
+    build: 
+      context: ./nginx
+      dockerfile: dockerfile
+    hostname: ng-proxy
+    image: ngproxy:latest
+    container_name: ng-reverse-proxy
+    networks: 
+      - hosting
+    ports:
+      - "80:80"
+      - "443:443"
